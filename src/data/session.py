@@ -1,14 +1,11 @@
-import logging
 from typing import Generator
 
 from sqlalchemy import URL, Engine, create_engine
 from sqlalchemy.orm import sessionmaker
 
-from settings import settings
+from settings import get_logger, settings
 
-logger = logging.getLogger(__file__)
-
-logger.setLevel(settings.log_level)
+logger = get_logger(__name__)
 
 
 def get_engine(url: URL) -> Engine:

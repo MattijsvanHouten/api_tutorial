@@ -1,11 +1,10 @@
 import logging
+from logging import Logger
 from pathlib import Path
 from typing import Any
 
 from pydantic_settings import BaseSettings
 from sqlalchemy import URL, make_url
-
-logging.basicConfig()
 
 
 class Settings(BaseSettings):
@@ -21,5 +20,14 @@ class Settings(BaseSettings):
 
     log_level: int = logging.DEBUG
 
+    def model_post_init(self, context: Any) -> None:
+        logging.basicConfig(level=self.log_level)
+
 
 settings = Settings()
+
+
+def get_logger(name: str) -> Logger:
+    logger = logging.getLogger(name)
+    logger.setLevel(settings.log_level)
+    return logger
