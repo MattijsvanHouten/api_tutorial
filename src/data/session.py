@@ -3,6 +3,7 @@ from typing import Generator
 from sqlalchemy import URL, Engine, create_engine
 from sqlalchemy.orm import sessionmaker
 
+from data.models import Base
 from settings import get_logger, settings
 
 logger = get_logger(__name__)
@@ -31,3 +32,13 @@ def get_db() -> Generator:
         yield db
     finally:
         db.close()
+
+
+def init_db():
+    engine = get_engine(settings.postgres_prod_url)
+
+    # Create tables in the database if they don't exist
+    logger.info("Creating tables in the database if they don't exist...")
+    Base.metadata.create_all(bind=engine)
+
+    return get_session(engine)

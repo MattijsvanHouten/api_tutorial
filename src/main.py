@@ -5,22 +5,12 @@ from sqlalchemy.orm import Session
 from api.models import User as UserAPI
 from api.models import UserCount as UserCountAPI
 from api.services import fetch_user_count, fetch_users
-from data.models import Base
 from data.models import User as UserDB
-from data.session import get_db, get_engine, get_session
-from settings import get_logger, settings
+from data.session import get_db, init_db
+from settings import get_logger
 from utils.helpers import get_or_create
 
 logger = get_logger(__name__)
-
-engine = get_engine(settings.postgres_prod_url)
-SessionLocal = get_session(engine)
-
-
-# Create tables in the database if they don't exist
-logger.info("Creating tables in the database if they don't exist...")
-Base.metadata.create_all(bind=engine)
-
 
 app = FastAPI(title="API tutorial", version="1.0")
 
@@ -67,3 +57,7 @@ def delete_user(
     db.commit()
 
     return {"message": "User deleted successfully"}
+
+
+if __name__ == "__main__":
+    init_db()
