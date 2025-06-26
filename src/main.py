@@ -13,7 +13,7 @@ from utils.helpers import get_or_create
 
 logger = get_logger(__name__)
 
-engine = get_engine(settings.database_url)
+engine = get_engine(settings.postgres_prod_url)
 SessionLocal = get_session(engine)
 
 

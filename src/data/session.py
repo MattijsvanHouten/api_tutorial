@@ -18,7 +18,7 @@ def get_session(engine: Engine) -> sessionmaker:
 
 def get_db() -> Generator:
     logger.info("Connecting to database...")
-    engine = get_engine(settings.database_url)
+    engine = get_engine(settings.postgres_prod_url)
     logger.debug("Engine: %s", engine)
 
     SessionLocal = get_session(engine)
